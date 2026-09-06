@@ -1,0 +1,10 @@
+Deki JSON Module
+Copyright 2026 Deki Engine and contributors
+
+This product includes software developed by third parties:
+
+cJSON (https://github.com/DaveGamble/cJSON)
+  License: MIT
+  Copyright (c) 2009-2017 Dave Gamble and cJSON contributors
+  Vendored under third_party/cJSON.
+  Full license: third_party/cJSON/LICENSE
