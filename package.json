@@ -1,7 +1,7 @@
 {
   "id": "deki-json",
   "displayName": "JSON",
-  "minEngine": "0.13.0",
+  "minEngine": "0.14.0",
   "buildDefine": "DEKI_PACKAGE_JSON",
   "requires": [],
   "features": [],
