@@ -2,6 +2,7 @@
 #include <deki/interop/Plugin.h>
 #include <deki/LogSystem.h>
 
+
 #ifdef DEKI_EDITOR
 extern void DekiJson_RegisterComponents();
 extern int  DekiJson_GetAutoComponentCount();
@@ -24,7 +25,7 @@ DEKI_JSON_API int DekiJson_EnsureRegistered(void)
 #endif
 }
 
-DEKI_PLUGIN_API const char* DekiPlugin_GetName(void)    { return "Deki JSON Package"; }
+DEKI_PLUGIN_API const char* DekiPlugin_GetName(void)    { return "DekiRendering::Deki JSON Package"; }
 DEKI_PLUGIN_API const char* DekiPlugin_GetVersion(void)
 {
 #ifdef DEKI_PACKAGE_VERSION
@@ -64,3 +65,4 @@ DEKI_PLUGIN_API void DekiPlugin_RegisterComponents(void)
 
 
 }  // extern "C"
+

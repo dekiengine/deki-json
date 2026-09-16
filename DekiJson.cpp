@@ -7,7 +7,8 @@
 
 #include <cstring>
 
-namespace Deki { namespace Json {
+
+namespace DekiJson {
 
 // ---- ctor / dtor / move ----
 
@@ -173,4 +174,5 @@ std::string Document::Dump() const
     return out;
 }
 
-}}  // namespace Deki::Json
+}  // namespace DekiJson
+

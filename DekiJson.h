@@ -3,7 +3,8 @@
 #include "DekiJsonPackage.h"
 #include <string>
 
-namespace Deki { namespace Json {
+
+namespace DekiJson {
 
 /**
  * @brief Move-only JSON document.
@@ -87,4 +88,5 @@ private:
     Document(void* node, bool owns) : m_Node(node), m_Owns(owns) {}
 };
 
-}}  // namespace Deki::Json
+}  // namespace DekiJson
+
