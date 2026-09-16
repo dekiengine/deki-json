@@ -25,7 +25,7 @@ DEKI_JSON_API int DekiJson_EnsureRegistered(void)
 #endif
 }
 
-DEKI_PLUGIN_API const char* DekiPlugin_GetName(void)    { return "DekiRendering::Deki JSON Package"; }
+DEKI_PLUGIN_API const char* DekiPlugin_GetName(void)    { return "Deki JSON Package"; }
 DEKI_PLUGIN_API const char* DekiPlugin_GetVersion(void)
 {
 #ifdef DEKI_PACKAGE_VERSION
