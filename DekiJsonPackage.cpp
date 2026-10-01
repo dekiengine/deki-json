@@ -38,7 +38,6 @@ DEKI_PLUGIN_API const char* DekiPlugin_GetReflectionJson(void) { return "{}"; }
 
 DEKI_PLUGIN_API int  DekiPlugin_Init(void)
 {
-    DEKI_LOG_INFO("[deki-json] DekiPlugin_Init");
     return 0;
 }
 
@@ -58,8 +57,7 @@ DEKI_PLUGIN_API const Deki::ComponentMeta* DekiPlugin_GetComponentMeta(int) { re
 DEKI_PLUGIN_API void DekiPlugin_RegisterComponents(void)
 {
 #ifdef DEKI_EDITOR
-    int n = DekiJson_EnsureRegistered();
-    DEKI_LOG_INFO("[deki-json] DekiPlugin_RegisterComponents -> %d component(s)", n);
+    DekiJson_EnsureRegistered();
 #endif
 }
 
