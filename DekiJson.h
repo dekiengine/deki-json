@@ -30,7 +30,8 @@ public:
     // --- Construction ---
 
     /// Parse JSON text. Returns an invalid Document on parse failure
-    /// (check with Valid()).
+    /// (check with Valid()), and for arrays/objects nested more than 32
+    /// deep, which would overflow a device's stack.
     static Document Parse(const std::string& text);
 
     /// Build a new empty object/array root.
@@ -65,12 +66,14 @@ public:
     void SetString(const char* key, const std::string& value);
 
     /// Move `child` into this object under `key`. `child` becomes invalid
-    /// after the call.
+    /// after the call. A borrowed view (from GetChild / GetAt) is copied,
+    /// and its own tree is left as it was.
     void SetChild(const char* key, Document child);
 
     // --- Building (array push) ---
 
     /// Move `child` to the end of this array. `child` becomes invalid.
+    /// A borrowed view is copied, as with SetChild.
     void PushBack(Document child);
 
     // --- Serialization ---

@@ -134,7 +134,11 @@ typedef int cJSON_bool;
 /* Limits how deeply nested arrays/objects can be before cJSON rejects to parse them.
  * This is to prevent stack overflows. */
 #ifndef CJSON_NESTING_LIMIT
-#define CJSON_NESTING_LIMIT 1000
+/* Deki: 32 instead of upstream's 1000. Parsing takes two stack frames per
+ * level and deleting one more; a few hundred levels overflow a 16 KB device
+ * task stack, and JSON from the network can be nested on purpose. 32 on every
+ * platform, so a document that parses on the desktop parses on the device. */
+#define CJSON_NESTING_LIMIT 32
 #endif
 
 /* returns the version of cJSON as a string */

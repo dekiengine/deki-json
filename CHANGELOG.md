@@ -8,6 +8,18 @@ breaking change bumps the minor across the editor, the engine and every
 package together, so a package with no changes of its own is still released
 alongside one that has them.
 
+## Unreleased
+
+### Fixed
+- `SetChild` and `PushBack` given a borrowed view (from `GetChild` or `GetAt`)
+  linked a node that still belonged to its own tree, so both roots freed it
+  and the program crashed. The view is now copied, and its tree is left as it
+  was.
+- Arrays and objects nested more than 32 deep no longer parse (cJSON's own
+  limit was 1000). Each level takes stack, and a few hundred overflowed a
+  device's 16 KB task stack: JSON from the network could crash the board.
+  The limit is the same on every platform.
+
 ## 0.17.0
 
 ### Changed

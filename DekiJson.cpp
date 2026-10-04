@@ -142,24 +142,36 @@ void Document::SetString(const char* key, const std::string& value)
     cJSON_AddStringToObject(static_cast<cJSON*>(m_Node), key, value.c_str());
 }
 
+// The node to link into another tree. A borrowed view (GetChild / GetAt)
+// still belongs to its own tree: linking it as-is put one node in two trees,
+// and both roots freed it. It is copied instead.
+static cJSON* TakeForLinking(void*& node, bool& owns)
+{
+    cJSON* taken = owns ? static_cast<cJSON*>(node)
+                        : cJSON_Duplicate(static_cast<cJSON*>(node), /*recurse=*/1);
+    if (owns) {
+        node = nullptr;
+        owns = false;
+    }
+    return taken;
+}
+
 void Document::SetChild(const char* key, Document child)
 {
     if (!m_Node || !key || !child.Valid()) return;
-    cJSON_AddItemToObject(static_cast<cJSON*>(m_Node),
-                          key,
-                          static_cast<cJSON*>(child.m_Node));
-    // Ownership transferred into the parent tree.
-    child.m_Node = nullptr;
-    child.m_Owns = false;
+    cJSON* node = TakeForLinking(child.m_Node, child.m_Owns);
+    if (!node) return;
+    if (!cJSON_AddItemToObject(static_cast<cJSON*>(m_Node), key, node))
+        cJSON_Delete(node);
 }
 
 void Document::PushBack(Document child)
 {
     if (!m_Node || !child.Valid()) return;
-    cJSON_AddItemToArray(static_cast<cJSON*>(m_Node),
-                         static_cast<cJSON*>(child.m_Node));
-    child.m_Node = nullptr;
-    child.m_Owns = false;
+    cJSON* node = TakeForLinking(child.m_Node, child.m_Owns);
+    if (!node) return;
+    if (!cJSON_AddItemToArray(static_cast<cJSON*>(m_Node), node))
+        cJSON_Delete(node);
 }
 
 // ---- serialization ----
