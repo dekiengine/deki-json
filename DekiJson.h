@@ -6,17 +6,13 @@
 namespace DekiJson
 {
 
-/**
- * @brief Move-only JSON document.
- *
- * A Document is either a root (created by Parse / Object / Array) which owns
- * the underlying tree, or a borrowed view of a child node obtained via
- * GetChild / GetAt. Borrowed views remain valid only while the owning root
- * is alive — keep the root around.
- *
- * Backed by cJSON internally. Consumers never include cJSON headers — the
- * public API is portable across every platform this module is built for.
- */
+/// Move-only JSON document.
+///
+/// A Document is either a root (from Parse, Object or Array), which owns its
+/// tree, or a borrowed view of a child node from GetChild or GetAt. A
+/// borrowed view is valid only while its root is alive.
+///
+/// Built on cJSON, which stays hidden: callers never include cJSON headers.
 class DEKI_JSON_API Document
 {
 public:
@@ -29,12 +25,12 @@ public:
 
     // --- Construction ---
 
-    /// Parse JSON text. Returns an invalid Document on parse failure
-    /// (check with Valid()), and for arrays/objects nested more than 32
-    /// deep, which would overflow a device's stack.
+    /// Parses JSON text. Returns an invalid Document (see Valid()) when the
+    /// text does not parse, or when arrays or objects nest more than 32 deep,
+    /// which would overflow a device's stack.
     static Document Parse(const std::string& text);
 
-    /// Build a new empty object/array root.
+    /// A new, empty object or array root.
     static Document Object();
     static Document Array();
 
@@ -47,16 +43,16 @@ public:
     bool GetBool(const char* key, bool fallback = false) const;
     std::string GetString(const char* key, const char* fallback = "") const;
 
-    /// Returns a borrowed view of the named child. Invalid if missing or not
-    /// an object/array. The view is only valid while this Document is alive.
+    /// A borrowed view of the named child, invalid when there is none. The
+    /// view is valid only while this Document is alive.
     Document GetChild(const char* key) const;
 
     // --- Reading (array access) ---
 
-    /// Number of elements (for arrays) or members (for objects). 0 otherwise.
+    /// Number of elements in an array or members in an object; 0 otherwise.
     int Size() const;
 
-    /// Borrowed view of the element at `index`. Invalid if out of range.
+    /// A borrowed view of the element at `index`, invalid when out of range.
     Document GetAt(int index) const;
 
     // --- Building (object setters) ---
@@ -65,26 +61,25 @@ public:
     void SetBool(const char* key, bool value);
     void SetString(const char* key, const std::string& value);
 
-    /// Move `child` into this object under `key`. `child` becomes invalid
-    /// after the call. A borrowed view (from GetChild / GetAt) is copied,
-    /// and its own tree is left as it was.
+    /// Moves `child` into this object under `key`; `child` is invalid
+    /// afterwards. A borrowed view (from GetChild or GetAt) is copied, and
+    /// its own tree stays as it was.
     void SetChild(const char* key, Document child);
 
     // --- Building (array push) ---
 
-    /// Move `child` to the end of this array. `child` becomes invalid.
+    /// Moves `child` to the end of this array; `child` is invalid afterwards.
     /// A borrowed view is copied, as with SetChild.
     void PushBack(Document child);
 
     // --- Serialization ---
 
-    /// Compact (no-whitespace) JSON text. Empty string on failure.
+    /// Compact JSON text with no whitespace. Empty on failure.
     std::string Dump() const;
 
 private:
-    // Hide the concrete cJSON dependency. `m_Node` is a `cJSON*` cast to
-    // void*; `m_Owns` is true for roots (and false for borrowed children
-    // returned by GetChild / GetAt).
+    // `m_Node` is a `cJSON*` stored as void* to keep cJSON out of this
+    // header. `m_Owns` is true for roots and false for borrowed views.
     void* m_Node = nullptr;
     bool m_Owns = false;
 

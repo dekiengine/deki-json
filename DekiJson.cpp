@@ -1,8 +1,8 @@
 #include "DekiJson.h"
 #include <deki/LogSystem.h>
 
-// cJSON is vendored under third_party/cJSON/ so this module has zero MCU-platform
-// coupling. The .c file is picked up by the module's recursive source glob.
+// cJSON is vendored under third_party/cJSON/, so this package needs nothing
+// from any platform. The package's recursive source glob compiles its .c file.
 #include "third_party/cJSON/cJSON.h"
 
 #include <cstring>
@@ -192,8 +192,8 @@ void Document::SetString(const char* key, const std::string& value)
 }
 
 // The node to link into another tree. A borrowed view (GetChild / GetAt)
-// still belongs to its own tree: linking it as-is put one node in two trees,
-// and both roots freed it. It is copied instead.
+// still belongs to its own tree, so it is copied: linked as-is, one node
+// would sit in two trees and both roots would free it.
 static cJSON* TakeForLinking(void*& node, bool& owns)
 {
     cJSON* taken = owns ? static_cast<cJSON*>(node) : cJSON_Duplicate(static_cast<cJSON*>(node), /*recurse=*/1);
