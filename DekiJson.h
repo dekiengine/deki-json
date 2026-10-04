@@ -3,8 +3,8 @@
 #include "DekiJsonPackage.h"
 #include <string>
 
-
-namespace DekiJson {
+namespace DekiJson
+{
 
 /**
  * @brief Move-only JSON document.
@@ -42,9 +42,9 @@ public:
 
     // --- Reading (object access) ---
 
-    bool   HasKey(const char* key) const;
+    bool HasKey(const char* key) const;
     double GetNumber(const char* key, double fallback = 0.0) const;
-    bool   GetBool  (const char* key, bool   fallback = false) const;
+    bool GetBool(const char* key, bool fallback = false) const;
     std::string GetString(const char* key, const char* fallback = "") const;
 
     /// Returns a borrowed view of the named child. Invalid if missing or not
@@ -62,7 +62,7 @@ public:
     // --- Building (object setters) ---
 
     void SetNumber(const char* key, double value);
-    void SetBool  (const char* key, bool   value);
+    void SetBool(const char* key, bool value);
     void SetString(const char* key, const std::string& value);
 
     /// Move `child` into this object under `key`. `child` becomes invalid
@@ -86,10 +86,13 @@ private:
     // void*; `m_Owns` is true for roots (and false for borrowed children
     // returned by GetChild / GetAt).
     void* m_Node = nullptr;
-    bool  m_Owns = false;
+    bool m_Owns = false;
 
-    Document(void* node, bool owns) : m_Node(node), m_Owns(owns) {}
+    Document(void* node, bool owns)
+        : m_Node(node),
+          m_Owns(owns)
+    {
+    }
 };
 
 }  // namespace DekiJson
-
