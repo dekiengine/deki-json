@@ -164,13 +164,31 @@ Document Document::GetAt(int index) const
 
 // ---- building ----
 
+// Puts `item` under `key`, replacing a member already there. cJSON's Add*
+// functions append even when the key exists, which left {"n":1,"n":2} and
+// reads that kept returning the first value. Lookups are case-insensitive, as
+// GetNumber and the other readers are. Takes ownership of `item`.
+static void SetMember(cJSON* object, const char* key, cJSON* item)
+{
+    if (!item)
+    {
+        return;
+    }
+    const bool stored = cJSON_GetObjectItem(object, key) ? cJSON_ReplaceItemInObject(object, key, item)
+                                                         : cJSON_AddItemToObject(object, key, item);
+    if (!stored)
+    {
+        cJSON_Delete(item);
+    }
+}
+
 void Document::SetNumber(const char* key, double value)
 {
     if (!m_Node || !key)
     {
         return;
     }
-    cJSON_AddNumberToObject(static_cast<cJSON*>(m_Node), key, value);
+    SetMember(static_cast<cJSON*>(m_Node), key, cJSON_CreateNumber(value));
 }
 
 void Document::SetBool(const char* key, bool value)
@@ -179,7 +197,7 @@ void Document::SetBool(const char* key, bool value)
     {
         return;
     }
-    cJSON_AddBoolToObject(static_cast<cJSON*>(m_Node), key, value);
+    SetMember(static_cast<cJSON*>(m_Node), key, cJSON_CreateBool(value));
 }
 
 void Document::SetString(const char* key, const std::string& value)
@@ -188,7 +206,7 @@ void Document::SetString(const char* key, const std::string& value)
     {
         return;
     }
-    cJSON_AddStringToObject(static_cast<cJSON*>(m_Node), key, value.c_str());
+    SetMember(static_cast<cJSON*>(m_Node), key, cJSON_CreateString(value.c_str()));
 }
 
 // The node to link into another tree. A borrowed view (GetChild / GetAt)
@@ -216,10 +234,7 @@ void Document::SetChild(const char* key, Document child)
     {
         return;
     }
-    if (!cJSON_AddItemToObject(static_cast<cJSON*>(m_Node), key, node))
-    {
-        cJSON_Delete(node);
-    }
+    SetMember(static_cast<cJSON*>(m_Node), key, node);
 }
 
 void Document::PushBack(Document child)

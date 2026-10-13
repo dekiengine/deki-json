@@ -56,6 +56,9 @@ public:
     Document GetAt(int index) const;
 
     // --- Building (object setters) ---
+    //
+    // Each replaces a member already under `key` (matched case-insensitively,
+    // as the readers match) rather than adding a second one.
 
     void SetNumber(const char* key, double value);
     void SetBool(const char* key, bool value);
