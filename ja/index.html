@@ -57,7 +57,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">deki-json<span id="projectnumber">&#160;0.21.0</span>
+   <div id="projectname">deki-json<span id="projectnumber">&#160;0.22.0</span>
    </div>
    <div id="projectbrief">Deki パッケージリファレンス</div>
   </td>
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 <img src="deki-json.png" alt=""/>
 </div>
     <p>実行時に JSON を扱う必要があるパッケージ向けの JSON パーサーです。組み込みでは ESP-IDF の cJSON をラップし、デスクトップでは同等の実装を使います。</p>
-<p>リポジトリ: <a href="https://github.com/dekiengine/deki-json">github.com/dekiengine/deki-json</a> · 最新リリース: 0.19.0 · エンジン 0.19.0 以降が必要</p>
+<p>リポジトリ: <a href="https://github.com/dekiengine/deki-json">github.com/dekiengine/deki-json</a> · 最新リリース: 0.22.0 · エンジン 0.22.0 以降が必要</p>
 <p><span class="tt">DekiEditor --packages-add deki-json &lt;project&gt;</span> か、パッケージマネージャーからインストールします。エンジン自身のコンポーネントと C++ API は <a href="https://dekiengine.github.io/docs/ja/">Deki のドキュメント</a>にあります。</p>
 <p>エディターでは <b>JSON</b> と表示されます。</p>
 <p>このパッケージは、エンジンが呼び出すドライバーまたはライブラリです。詳しくは README を参照してください。</p>
@@ -123,30 +123,22 @@ document.addEventListener('DOMContentLoaded',() => { initNavTree('index.html',''
 変更履歴</h1>
 <p>変更履歴は英語です。</p>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md0"></a>
-0.19.0</h2>
+0.22.0</h2>
 <h2 class="doxsection"><a class="anchor" id="autotoc_md1"></a>
+Changed</h2>
+<ul>
+<li><span class="tt">minEngine</span> 0.22.0: built against engine 0.22.0. A build of this package from before does not load and is rebuilt.</li>
+</ul>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
+0.19.0</h2>
+<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
 Changed</h2>
 <ul>
 <li><span class="tt">minEngine</span> 0.19.0: built against engine 0.19.0, whose component metadata records the package each class is in. A build of this package from before does not load and is rebuilt.</li>
 </ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md2"></a>
-0.18.0</h2>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md3"></a>
-Changed</h2>
-<ul>
-<li><span class="tt">minEngine</span> 0.18.0. Reflection ABI 21: the package must be rebuilt.</li>
-<li><b>Names follow the code style</b> (deki-engine/docs/codestyle): types, functions and enum values are PascalCase, constants kPascalCase, members m_PascalCase, locals and parameters camelCase. The code is formatted with clang-format 22.</li>
-<li>The functions the editor finds by name are PascalCase: DekiJsonRegisterComponents, DekiJsonGetAutoComponentCount, DekiJsonEnsureRegistered and the rest. Built against engine ABI 21; a build of this package from before does not load and is rebuilt.</li>
-</ul>
-<h2 class="doxsection"><a class="anchor" id="autotoc_md4"></a>
-Fixed</h2>
-<ul>
-<li><span class="tt">SetChild</span> and <span class="tt">PushBack</span> given a borrowed view (from <span class="tt">GetChild</span> or <span class="tt">GetAt</span>) linked a node that still belonged to its own tree, so both roots freed it and the program crashed. The view is now copied, and its tree is left as it was.</li>
-<li>Arrays and objects nested more than 32 deep no longer parse (cJSON's own limit was 1000). Each level takes stack, and a few hundred overflowed a device's 16 KB task stack: JSON from the network could crash the board. The limit is the same on every platform.</li>
-</ul>
 <p>それ以前のリリース: <a href="https://github.com/dekiengine/deki-json/blob/master/CHANGELOG.md">CHANGELOG.md</a></p>
 <hr  />
-<p>パッケージのリフレクションデータから生成しています (エンジン 0.21.0)。プロパティ名はシーンファイルで使われるキーです。名前を変えても別名が残ります (<a href="https://github.com/dekiengine/deki-editor/blob/master/COMPATIBILITY.md">互換性</a>)。 </p>
+<p>パッケージのリフレクションデータから生成しています (エンジン 0.22.0)。プロパティ名はシーンファイルで使われるキーです。名前を変えても別名が残ります (<a href="https://github.com/dekiengine/deki-editor/blob/master/COMPATIBILITY.md">互換性</a>)。 </p>
 </div></div><!-- PageDoc -->
 <a href="doxygen_crawl.html"></a>
 </div><!-- contents -->
